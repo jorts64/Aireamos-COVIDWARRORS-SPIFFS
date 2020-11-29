@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<title>Aireamos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="w3.css">
+<script src="w3.js"></script>
+<body>
+
+<!-- Sidebar -->
+<div w3-include-html="sidebar.html"></div>
+<!-- Bottom bar -->
+<div class="w3-bottom">
+  <div class="w3-bar w3-blue">
+    <a href="#" class="w3-bar-item w3-button">◀</a>
+    <a href="#" class="w3-bar-item w3-button w3-middle"> 🌡</a>
+    <a href="hr.html" class="w3-bar-item w3-button w3-middle"> 💧</a>
+    <a href="hr.html" class="w3-bar-item w3-button w3-right">▶</a>
+  </div>
+</div>
+<!-- Page Top Content -->
+<!--  *********** CANVIAR My Page PEL TÍTOL DE LA PÀGINA **************   -->
+<div class="w3-teal">
+  <button class="w3-button w3-teal w3-xlarge" onclick="w3_open()">☰</button>
+  <span class="w3-center w3-padding-16">Aireamos</span>
+</div>
+
+<!--  ************* INICI CONTINGUT PROPI DE LA PÀGINA ****************   -->
+<br/>
+
+<div class="w3-cell-row">
+
+  <div class="w3-container w3-cell w3-mobile">
+    <div class="w3-card-4">
+      <header class="w3-container w3-light-grey">
+        <h3>Concentración de CO2</h3>
+      </header>
+      <div class="w3-container w3-center">
+      <p></p>
+       <img src='Aireamos192p.png' height=64 w3-left>			
+       <button class="w3-button w3-round-xxlarge w3-green" id="valorC">N/A</button>
+      <p></p>
+      </div>
+      <button class="w3-button w3-block w3-dark-grey">Valores de 400 ppm son saludables.<br/> Por encima de 1000 ppm hay que ventilar</button>
+    </div>
+    <p></p>
+  </div>
+
+  <div class="w3-container w3-cell w3-mobile">
+    <div class="w3-card-4">
+      <header class="w3-container w3-light-grey">
+        <h3>Humedad relativa</h3>
+      </header>
+      <div class="w3-container w3-center">
+      <p></p>
+       <img src='clouds.svg' height=64 w3-left>			
+       <button class="w3-button w3-round-xxlarge w3-green" id="valorH">N/A</button>
+      <p></p>
+      </div>
+      <button class="w3-button w3-block w3-dark-grey">La humedad afecta al coronavirus<br/>y cambia la sensacion de confort tèrmica</button>
+    </div>
+    <p></p>
+  </div>
+
+  <div class="w3-container w3-cell w3-mobile">
+    <div class="w3-card-4">
+      <header class="w3-container w3-light-grey">
+        <h3>Temperatura</h3>
+      </header>
+      <div class="w3-container w3-center">
+      <p></p>
+       <img src='hot.svg' height=64 w3-left>			
+       <button class="w3-button w3-round-xxlarge w3-green" id="valorT">N/A</button>
+      <p></p>
+      </div>
+      <button class="w3-button w3-block w3-dark-grey">Temperaturas demasiado altas <br/>o demasiado bajas no son confortables</button>
+    </div>
+    <p></p>
+  </div>
+
+</div>
+
+
+<script>
+  function loadC() {
+    var xhttp = new XMLHttpRequest();
+	var temp = 0;
+	xhttp.open('GET', 'getC', false);
+	xhttp.send();
+	temp = parseFloat(xhttp.responseText);
+	return (temp);
+	}
+
+  function loadH() {
+    var xhttp = new XMLHttpRequest();
+	var temp = 0;
+	xhttp.open('GET', 'getH', false);
+	xhttp.send();
+	temp = parseFloat(xhttp.responseText);
+	return (temp);
+	}
+
+  function loadT() {
+    var xhttp = new XMLHttpRequest();
+	var temp = 0;
+	xhttp.open('GET', 'getT', false);
+	xhttp.send();
+	temp = parseFloat(xhttp.responseText);
+	return (temp);
+	}
+
+  var myVar = setInterval(myTimer, 3000);
+  function myTimer() {
+	var t= loadC();
+	document.getElementById('valorC').innerHTML = t+" ppm";
+        w3.removeClass('#valorC','w3-red')
+        w3.removeClass('#valorC','w3-amber')
+        w3.addClass('#valorC','w3-green')
+	if (t>500) {
+           w3.removeClass('#valorC','w3-green')
+           w3.addClass('#valorC','w3-amber')
+        }
+	if (t>1000) {
+           w3.removeClass('#valorC','w3-amber')
+           w3.addClass('#valorC','w3-red')
+        }
+	t= loadH();
+	document.getElementById('valorH').innerHTML = t+" %";
+        w3.removeClass('#valorH','w3-red')
+        w3.removeClass('#valorH','w3-amber')
+        w3.addClass('#valorH','w3-green')
+	if (t>50) {
+           w3.removeClass('#valorH','w3-green')
+           w3.addClass('#valorH','w3-amber')
+        }
+ 	if (t>90) {
+           w3.removeClass('#valorH','w3-amber')
+           w3.addClass('#valorH','w3-red')
+        }
+	t= loadT();
+	document.getElementById('valorT').innerHTML = t+" °C";
+        w3.removeClass('#valorT','w3-amber')
+        w3.addClass('#valorT','w3-green')
+	if (t>30) {
+           w3.removeClass('#valorT','w3-green')
+           w3.addClass('#valorT','w3-amber')
+        }
+	if (t<10) {
+           w3.removeClass('#valorT','w3-green')
+           w3.addClass('#valorT','w3-amber')
+        }
+
+  }
+
+  myTimer();
+	
+</script>
+
+
+<!--  *************** FI CONTINGUT PROPI DE LA PÀGINA *****************   -->
+
+<script>
+w3.includeHTML();
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+}
+
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+}
+</script>
+     
+</body>
+</html> 

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<title>Aireamos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="w3.css">
+<script src="w3.js"></script>
+<body>
+
+<!-- Sidebar -->
+<div w3-include-html="sidebar.html"></div>
+<!-- Bottom bar -->
+<div class="w3-bottom">
+  <div class="w3-bar w3-blue">
+    <a href="maquinari.html" class="w3-bar-item w3-button">◀</a>
+    <a href="index.htm" class="w3-bar-item w3-button w3-middle"> 🌡</a>
+    <a href="hr.html" class="w3-bar-item w3-button w3-middle"> 💧</a>
+    <a href="credits.html" class="w3-bar-item w3-button w3-right">▶</a>
+  </div>
+</div>
+<!-- Page Top Content -->
+<!--  *********** CANVIAR My Page PEL TÍTOL DE LA PÀGINA **************   -->
+<div class="w3-teal">
+  <button class="w3-button w3-teal w3-xlarge" onclick="w3_open()">☰</button>
+  <span class="w3-center w3-padding-16">Sensor CO2</span>
+</div>
+
+<!--  ************* INICI CONTINGUT PROPI DE LA PÀGINA ****************   -->
+
+<div class="w3-container">
+<p>El MH-Z19 es un sensor NDIR, que mide realmente la concentración de CO2.</p>
+<p>Es más caro que los sensores químicos, muy sensibles a perturbaciones por otras substancias.</br></br></p>
+</div>
+
+
+<img src="sensor.png" style="width:60%">
+
+
+<!--  *************** FI CONTINGUT PROPI DE LA PÀGINA *****************   -->
+
+<script>
+w3.includeHTML();
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+}
+
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+}
+</script>
+     
+</body>
+</html> 
