@@ -43,7 +43,7 @@ void espera(int temps) {
 void pageHead(){
   server.setContentLength(CONTENT_LENGTH_UNKNOWN);
   server.send(200, "text/html", "");
-  server.sendContent("<!DOCTYPE html><html><head><title>Gesti&oacute; de fitxersr</title><meta charset='UTF-8'><meta name='viewport' content='width=device-width'/></head><body>");  
+  server.sendContent("<!DOCTYPE html><html><head><title>Gesti&oacute;n de archivos</title><meta charset='UTF-8'><meta name='viewport' content='width=device-width'/></head><body>");  
 }
 
 void initWifi(){
