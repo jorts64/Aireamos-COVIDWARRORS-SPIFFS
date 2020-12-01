@@ -35,8 +35,15 @@ void ajaxC() {
      txt = String();
 }
 
+void ajaxP() {
+     String txt = String(P);
+     server.send(200, "text/plain", txt);
+     txt = String();
+}
+
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);  
+  digitalWrite(LED_BUILTIN,HIGH);
   oled.begin();    // Initialize the OLED
   oled.clear(ALL); // Clear the display's internal memory
   oled.display();  // Display what's in the buffer (splashscreen)
@@ -50,6 +57,7 @@ void setup() {
   server.on("/getT", ajaxT);
   server.on("/getH", ajaxH);
   server.on("/getC", ajaxC);
+  server.on("/getP", ajaxP);
   server.begin();
   syncTime();
   ahora = millis();
@@ -63,6 +71,7 @@ void loop() {
   T=getT();
   RH=getRH();
   CO2=getCO2();
+  P=getP();
   debugTime();
   DBG_OUTPUT_PORT.print("Temperatura (ºC): ");
   DBG_OUTPUT_PORT.println(T);
@@ -70,6 +79,8 @@ void loop() {
   DBG_OUTPUT_PORT.println(RH);
   DBG_OUTPUT_PORT.print("Concentración CO2 (ppm): ");
   DBG_OUTPUT_PORT.println(CO2);
+  DBG_OUTPUT_PORT.print("Presión atmosférica (hPa): ");
+  DBG_OUTPUT_PORT.println(P);
   DBG_OUTPUT_PORT.println("");
   oled.clear(PAGE);
   oled.setFontType(0);

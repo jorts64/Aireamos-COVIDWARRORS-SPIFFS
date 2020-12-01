@@ -12,15 +12,15 @@
 <!-- Bottom bar -->
 <div class="w3-bottom">
   <div class="w3-bar w3-blue">
-    <a href="hr.html" class="w3-bar-item w3-button">◀</a>
-    <a href="p.html" class="w3-bar-item w3-button w3-right">▶</a>
+    <a href="t.html" class="w3-bar-item w3-button">◀</a>
+    <a href="maquinari.html" class="w3-bar-item w3-button w3-right">▶</a>
   </div>
 </div>
 <!-- Page Top Content -->
 <!--  *********** CANVIAR My Page PEL TÍTOL DE LA PÀGINA **************   -->
 <div class="w3-teal">
   <button class="w3-button w3-teal w3-xlarge" onclick="w3_open()">☰</button>
-  <span class="w3-center w3-padding-16">Temperatura</span>
+  <span class="w3-center w3-padding-16">Presión atmosférica</span>
 </div>
 
 <!--  ************* INICI CONTINGUT PROPI DE LA PÀGINA ****************   -->
@@ -31,10 +31,10 @@
 
 <script src="gauge.js"></script>
 <script>
-  function loadT() {
+  function loadP() {
     var xhttp = new XMLHttpRequest();
 	var temp = 0;
-	xhttp.open('GET', 'getT', false);
+	xhttp.open('GET', 'getP', false);
 	xhttp.send();
 	temp = parseFloat(xhttp.responseText);
 	return (temp);
@@ -47,19 +47,18 @@
   	width       : 200,
 	height      : 200,
 	glow        : true,
-	units       : '°C',
-	title       : 'Temperatura',
- 	minValue    : 0,
-	maxValue    : 45,
-	majorTicks  : ['0','5','10','15','20','25','30','35','40','45'],
+	units       : 'ppm',
+	title       : 'Presión',
+ 	minValue    : 960,
+	maxValue    : 1060,
+	majorTicks  : ['960','970','980','990','1000','1010','1020','1030','1040','1050','1060'],
 	minorTicks  : 5,
 	strokeTicks : false,
 	highlights  : [
-			{ from : 0, to : 10, color : 'yellow' },
-			{ from : 10, to : 30, color : 'green' },
-			{ from : 30, to : 45, color : 'yellow' }
+			{ from : 960, to : 990, color : 'yellow' },
+			{ from : 990, to : 1060, color : 'green' }
 			],
-	valueFormat : { int : 2, dec : 1 },
+	valueFormat : { int : 4, dec : 0 },
 	colors      : {
 			plate      : '#f5f5f5',
 			majorTicks : '#000',
@@ -78,7 +77,7 @@
 
     gauge.onready = function() {
 	setInterval( function() {
-		gauge.setValue( loadT());
+		gauge.setValue( loadP());
 	}, 3000);
     };
   gauge.draw();
@@ -86,7 +85,7 @@
 
 
 DrawGauge();
-gauge.setValue( loadT());
+gauge.setValue( loadP());
 	
 </script>
 

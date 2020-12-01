@@ -27,7 +27,7 @@
 
 <div class="w3-cell-row">
 
-  <div class="w3-container w3-cell w3-mobile">
+  <div class="w3-container w3-cell w3-third w3-mobile">
     <div class="w3-card-4">
       <header class="w3-container w3-light-grey">
         <h3>Concentración de CO2</h3>
@@ -43,14 +43,14 @@
     <p></p>
   </div>
 
-  <div class="w3-container w3-cell w3-mobile">
+  <div class="w3-container w3-cell w3-third w3-mobile">
     <div class="w3-card-4">
       <header class="w3-container w3-light-grey">
         <h3>Humedad relativa</h3>
       </header>
       <div class="w3-container w3-center">
       <p></p>
-       <img src='clouds.svg' height=64 w3-left>			
+       <img src='drop.svg' height=64 w3-left>			
        <button class="w3-button w3-round-xxlarge w3-green" id="valorH">N/A</button>
       <p></p>
       </div>
@@ -59,7 +59,7 @@
     <p></p>
   </div>
 
-  <div class="w3-container w3-cell w3-mobile">
+  <div class="w3-container w3-cell w3-third w3-mobile">
     <div class="w3-card-4">
       <header class="w3-container w3-light-grey">
         <h3>Temperatura</h3>
@@ -71,6 +71,22 @@
       <p></p>
       </div>
       <button class="w3-button w3-block w3-dark-grey">Temperaturas demasiado altas <br/>o demasiado bajas no son confortables</button>
+    </div>
+    <p></p>
+  </div>
+
+  <div class="w3-container w3-cell w3-third w3-mobile">
+    <div class="w3-card-4">
+      <header class="w3-container w3-light-grey">
+        <h3>Presión atmosférica</h3>
+      </header>
+      <div class="w3-container w3-center">
+      <p></p>
+       <img src='clouds.svg' height=64 w3-left>			
+       <button class="w3-button w3-round-xxlarge w3-green" id="valorP">N/A</button>
+      <p></p>
+      </div>
+      <button class="w3-button w3-block w3-dark-grey">Actualmente se utiliza el hPA como unidad <br/>en lugar del milibar</button>
     </div>
     <p></p>
   </div>
@@ -101,6 +117,15 @@
     var xhttp = new XMLHttpRequest();
 	var temp = 0;
 	xhttp.open('GET', 'getT', false);
+	xhttp.send();
+	temp = parseFloat(xhttp.responseText);
+	return (temp);
+	}
+
+  function loadP() {
+    var xhttp = new XMLHttpRequest();
+	var temp = 0;
+	xhttp.open('GET', 'getP', false);
 	xhttp.send();
 	temp = parseFloat(xhttp.responseText);
 	return (temp);
@@ -146,6 +171,9 @@
            w3.removeClass('#valorT','w3-green')
            w3.addClass('#valorT','w3-amber')
         }
+	t= loadP();
+	document.getElementById('valorP').innerHTML = t+" hPa";
+
 
   }
 

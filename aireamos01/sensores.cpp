@@ -2,12 +2,16 @@
 SHT3X sht30(0x45);
 #include <Adafruit_SGP30.h>
 Adafruit_SGP30 sgp30;
-#include <Wire.h>  // Include Wire if you're using I2C
+#include <Wire.h>  
+#include <Adafruit_BMP085.h>
+Adafruit_BMP085 bmp;
+
 #define DBG_OUTPUT_PORT Serial
 
 void initSensors() {
   Wire.begin();
   sgp30.begin();  
+  bmp.begin();
 }
 
 void getSensors() {
@@ -27,6 +31,9 @@ int getCO2() {
   return(sgp30.eCO2);
 }
 
+int getP() {
+  return(bmp.readPressure()/100);
+}
 
 void syncTime() {
   // TZ offset +1h
