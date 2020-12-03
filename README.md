@@ -1,4 +1,4 @@
-# Aireamos-CodeWarriors-SPIFFS
+# Aireamos-CoronaWarriors-SPIFFS
 Propuestas de código para CoronaWarriors division Aireamos
 
 
