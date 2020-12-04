@@ -38,7 +38,7 @@
        <button class="w3-button w3-round-xxlarge w3-green" id="valorC">N/A</button>
       <p></p>
       </div>
-      <button class="w3-button w3-block w3-dark-grey">Valores de 400 ppm son saludables.<br/> Por encima de 1000 ppm hay que ventilar</button>
+      <button class="w3-button w3-block w3-dark-grey">Valores de 400 ppm son saludables.<br/> Por encima de 1000 ppm el CO2<br/> produce aturdimiento</button>
     </div>
     <p></p>
   </div>
@@ -54,7 +54,7 @@
        <button class="w3-button w3-round-xxlarge w3-green" id="valorH">N/A</button>
       <p></p>
       </div>
-      <button class="w3-button w3-block w3-dark-grey">La humedad afecta al coronavirus<br/>y cambia la sensacion de confort tèrmica</button>
+      <button class="w3-button w3-block w3-dark-grey">Por debajo del 40% favorece la resistencia<br/> del coronavirus. Por encima del 60% se<br/> promueve el crecimiento del moho.</button>
     </div>
     <p></p>
   </div>
@@ -92,6 +92,9 @@
   </div>
 
 </div>
+    <p></p>
+    <p></p>
+    <p></p>
 
 
 <script>
@@ -151,11 +154,11 @@
         w3.removeClass('#valorH','w3-red')
         w3.removeClass('#valorH','w3-amber')
         w3.addClass('#valorH','w3-green')
-	if (t>50) {
+	if (t>60) {
            w3.removeClass('#valorH','w3-green')
            w3.addClass('#valorH','w3-amber')
         }
- 	if (t>90) {
+ 	if (t<40) {
            w3.removeClass('#valorH','w3-amber')
            w3.addClass('#valorH','w3-red')
         }
