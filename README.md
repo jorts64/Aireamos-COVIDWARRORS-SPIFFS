@@ -1,5 +1,5 @@
-# Aireamos-CoronaWarriors-SPIFFS
-Propuestas de código para CoronaWarriors division Aireamos
+# Aireamos--COVIDWARRORS-SPIFFS
+Propuestas de código para COVIDWARRORS division Aireamos
 
 
 [www.aireamos.org](http://www.aireamos.org)
