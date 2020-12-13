@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<title>Aireamos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="w3.css">
+<script src="w3.js"></script>
+<body>
+
+<!-- Sidebar -->
+<div w3-include-html="sidebar.html"></div>
+<!-- Bottom bar -->
+<div class="w3-bottom">
+  <div class="w3-bar w3-blue">
+    <a href="co2.html" class="w3-bar-item w3-button">◀</a>
+    <a href="t.html" class="w3-bar-item w3-button w3-right">▶</a>
+  </div>
+</div>
+<!-- Page Top Content -->
+<!--  *********** CANVIAR My Page PEL TÍTOL DE LA PÀGINA **************   -->
+<div class="w3-teal">
+  <button class="w3-button w3-teal w3-xlarge" onclick="w3_open()">☰</button>
+  <span class="w3-center w3-padding-16">Humedad relativa</span>
+</div>
+
+<!--  ************* INICI CONTINGUT PROPI DE LA PÀGINA ****************   -->
+<br/>
+
+	<canvas id="gauge"></canvas>
+	<div id="console"></div>
+<div>
+<p>Se recomienda mantener la humedad relativa idealmente entre el 40 y el 60% de humedad</p>
+<p>Por debajo del 40% de humedad:</p>
+<ul>
+<li>Mayor tiempo supervivencia de los aerosoles en el aire</li>
+<li>Mayor resistencia de la membrana del virus</li>
+<li>Mayor susceptibilidad de las personas debido a afectación de las mucosas de las vías respiratorias</li>
+</ul>
+
+
+
+
+<script src="gauge.js"></script>
+<script>
+  function loadH() {
+    var xhttp = new XMLHttpRequest();
+	var temp = 0;
+	xhttp.open('GET', 'getH', false);
+	xhttp.send();
+	temp = parseFloat(xhttp.responseText);
+	return (temp);
+	}
+	
+
+  function DrawGauge() {
+    gauge = new Gauge({
+	renderTo    : 'gauge',
+  	width       : 200,
+	height      : 200,
+	glow        : true,
+	units       : '%',
+	title       : 'Humedad',
+ 	minValue    : 0,
+	maxValue    : 100,
+	majorTicks  : ['0','10','20','30','40','50','60','70','80','90','100'],
+	minorTicks  : 10,
+	strokeTicks : false,
+	highlights  : [
+			{ from : 0, to : 40, color : 'red' },
+			{ from : 40, to : 60, color : 'green' },
+			{ from : 60, to : 100, color : 'yellow' }
+			],
+	valueFormat : { int : 2, dec : 1 },
+	colors      : {
+			plate      : '#f5f5f5',
+			majorTicks : '#000',
+			minorTicks : '#222',
+			title      : '#222',
+			units      : '#666',
+			numbers    : '#222',
+			needle     : { start : 'rgba(240, 128, 128, 1)', end : 'rgba(255, 160, 122, .9)' }
+			},
+	animation : {
+			delay : 25,
+			duration: 500,
+			fn : 'bounce'
+         		}
+    });
+
+    gauge.onready = function() {
+	setInterval( function() {
+		gauge.setValue( loadH());
+	}, 3000);
+    };
+  gauge.draw();
+  };	
+
+
+DrawGauge();
+gauge.setValue( loadH());
+	
+</script>
+
+
+
+<!--  *************** FI CONTINGUT PROPI DE LA PÀGINA *****************   -->
+
+<script>
+w3.includeHTML();
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+}
+
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+}
+</script>
+     
+</body>
+</html> 

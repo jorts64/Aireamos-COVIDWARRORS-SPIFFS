@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<title>Aireamos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="w3.css">
+<script src="w3.js"></script>
+<body>
+
+<!-- Sidebar -->
+<div w3-include-html="sidebar.html"></div>
+<!-- Bottom bar -->
+<div class="w3-bottom">
+  <div class="w3-bar w3-blue">
+    <a href="historic.html" class="w3-bar-item w3-button">◀</a>
+    <a href="sensor.html" class="w3-bar-item w3-button w3-right">▶</a>
+  </div>
+</div>
+<!-- Page Top Content -->
+<!--  *********** CANVIAR My Page PEL TÍTOL DE LA PÀGINA **************   -->
+<div class="w3-teal">
+  <button class="w3-button w3-teal w3-xlarge" onclick="w3_open()">☰</button>
+  <span class="w3-center w3-padding-16">Hardware</span>
+</div>
+
+<!--  ************* INICI CONTINGUT PROPI DE LA PÀGINA ****************   -->
+
+<div class="w3-container">
+  <h2>Componentes</h2>
+  <table class="w3-table-all">
+    <tr>
+      <th>Componente</th>
+      <th>Modelo</th>
+      <th>Precio</th>
+    </tr>
+    <tr>
+      <td>Microcontrolador</td>
+      <td>Wemos D1 mini</td>
+      <td>2 €</td>
+    </tr>
+    <tr>
+      <td>Sensor CO2</td>
+      <td>MH-Z19</td>
+      <td>13 €</td>
+    </tr>
+    <tr>
+      <td>Sensor temperatura, humedad y presión</td>
+      <td>BME280</td>
+      <td>1 €</td>
+    </tr>
+    <tr>
+      <td>Pantalla OLED</td>
+      <td>0,9" I2C SSD1306</td>
+      <td>1 €</td>
+    </tr>
+  </table>
+</div>
+
+
+<img src="pcb1.png" alt="Separat" style="width:100%">
+
+
+<img src="pcb2.png" alt="Conjunt" style="width:100%">
+
+
+
+<!--  *************** FI CONTINGUT PROPI DE LA PÀGINA *****************   -->
+
+<script>
+w3.includeHTML();
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+}
+
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+}
+</script>
+     
+</body>
+</html> 

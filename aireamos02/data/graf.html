@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<title>Aireamos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="w3.css">
+<script src="w3.js"></script>
+<body>
+
+<!-- Sidebar -->
+<div w3-include-html="sidebar.html"></div>
+<!-- Bottom bar -->
+<div class="w3-bottom">
+  <div class="w3-bar w3-blue">
+    <a href="p.html" class="w3-bar-item w3-button">◀</a>
+    <a href="historic.html" class="w3-bar-item w3-button w3-right">▶</a>
+  </div>
+</div>
+<!-- Page Top Content -->
+<!--  *********** CANVIAR My Page PEL TÍTOL DE LA PÀGINA **************   -->
+<div class="w3-teal">
+  <button class="w3-button w3-teal w3-xlarge" onclick="w3_open()">☰</button>
+  <span class="w3-center w3-padding-16">Gráfica datos CO2 de hoy</span>
+</div>
+
+<!--  ************* INICI CONTINGUT PROPI DE LA PÀGINA ****************   -->
+<br/><br/>
+
+<img src="graf" style="width:70%">
+<br/><br/>
+<a href="hoy.csv"> Bajar archivo CSV con los datos de hoy</a>
+
+
+<!--  *************** FI CONTINGUT PROPI DE LA PÀGINA *****************   -->
+
+<script>
+w3.includeHTML();
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+}
+
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+}
+</script>
+     
+</body>
+</html> 

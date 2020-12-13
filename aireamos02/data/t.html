@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<title>Aireamos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="w3.css">
+<script src="w3.js"></script>
+<body>
+
+<!-- Sidebar -->
+<div w3-include-html="sidebar.html"></div>
+<!-- Bottom bar -->
+<div class="w3-bottom">
+  <div class="w3-bar w3-blue">
+    <a href="hr.html" class="w3-bar-item w3-button">◀</a>
+    <a href="p.html" class="w3-bar-item w3-button w3-right">▶</a>
+  </div>
+</div>
+<!-- Page Top Content -->
+<!--  *********** CANVIAR My Page PEL TÍTOL DE LA PÀGINA **************   -->
+<div class="w3-teal">
+  <button class="w3-button w3-teal w3-xlarge" onclick="w3_open()">☰</button>
+  <span class="w3-center w3-padding-16">Temperatura</span>
+</div>
+
+<!--  ************* INICI CONTINGUT PROPI DE LA PÀGINA ****************   -->
+<br/>
+
+	<canvas id="gauge"></canvas>
+	<div id="console"></div>
+
+<script src="gauge.js"></script>
+<script>
+  function loadT() {
+    var xhttp = new XMLHttpRequest();
+	var temp = 0;
+	xhttp.open('GET', 'getT', false);
+	xhttp.send();
+	temp = parseFloat(xhttp.responseText);
+	return (temp);
+	}
+	
+
+  function DrawGauge() {
+    gauge = new Gauge({
+	renderTo    : 'gauge',
+  	width       : 200,
+	height      : 200,
+	glow        : true,
+	units       : '°C',
+	title       : 'Temperatura',
+ 	minValue    : 0,
+	maxValue    : 45,
+	majorTicks  : ['0','5','10','15','20','25','30','35','40','45'],
+	minorTicks  : 5,
+	strokeTicks : false,
+	highlights  : [
+			{ from : 0, to : 10, color : 'yellow' },
+			{ from : 10, to : 30, color : 'green' },
+			{ from : 30, to : 45, color : 'yellow' }
+			],
+	valueFormat : { int : 2, dec : 1 },
+	colors      : {
+			plate      : '#f5f5f5',
+			majorTicks : '#000',
+			minorTicks : '#222',
+			title      : '#222',
+			units      : '#666',
+			numbers    : '#222',
+			needle     : { start : 'rgba(240, 128, 128, 1)', end : 'rgba(255, 160, 122, .9)' }
+			},
+	animation : {
+			delay : 25,
+			duration: 500,
+			fn : 'bounce'
+         		}
+    });
+
+    gauge.onready = function() {
+	setInterval( function() {
+		gauge.setValue( loadT());
+	}, 3000);
+    };
+  gauge.draw();
+  };	
+
+
+DrawGauge();
+gauge.setValue( loadT());
+	
+</script>
+
+
+<!--  *************** FI CONTINGUT PROPI DE LA PÀGINA *****************   -->
+
+<script>
+w3.includeHTML();
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+}
+
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+}
+</script>
+     
+</body>
+</html> 
