@@ -5,7 +5,6 @@ const char *password = STAPSK;
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
-#define DBG_OUTPUT_PORT Serial
 #include <FS.h>
 
 // Helper functions prototypes
@@ -47,45 +46,26 @@ void pageHead(){
 }
 
 void initWifi(){
-  DBG_OUTPUT_PORT.begin(115200);
   if (MODE_WIFI==WIFI_STA) {
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
-    DBG_OUTPUT_PORT.println("");
-    DBG_OUTPUT_PORT.printf("Conectando a %s\n", ssid);
     while (WiFi.status() != WL_CONNECTED) {
       delay(500);
-      DBG_OUTPUT_PORT.print(".");
     }
-    DBG_OUTPUT_PORT.println("");
-    DBG_OUTPUT_PORT.print("Conectado a la red! Dirección IP: ");
-    DBG_OUTPUT_PORT.println(WiFi.localIP());
-
-    DBG_OUTPUT_PORT.print("Encontrarás en http://");
-    DBG_OUTPUT_PORT.print(WiFi.localIP());
-    DBG_OUTPUT_PORT.println("/dir el gestor de archivos de la SD virtual");
   }
   else {
     WiFi.mode(WIFI_AP);
     WiFi.softAP(ssid, password);
-    DBG_OUTPUT_PORT.print("Encontrarás en http://192.168.4.1/dir el gestor de archivos de la SD virtual");
   }
 }
 
 void initHelper(){
-  DBG_OUTPUT_PORT.print("\n");
-  DBG_OUTPUT_PORT.setDebugOutput(true);
     Dir dir = SPIFFS.openDir("/");
     while (dir.next()) {
       String fileName = dir.fileName();
       size_t fileSize = dir.fileSize();
-      DBG_OUTPUT_PORT.printf("FS File: %s, size: %s\n", fileName.c_str(), formatBytes(fileSize).c_str());
-      DBG_OUTPUT_PORT.printf("\n");
   }
-
   initWifi();
-
-  //SERVER INIT
 #if defined EDITABLE  
   server.on("/dir", HTTP_GET, printDirectory);
   server.on("/create", HTTP_GET, handleFileCreate);
@@ -98,16 +78,12 @@ void initHelper(){
   server.on("/edit", HTTP_GET, handleFileEdit);
   server.on("/save", HTTP_POST, handleFileSave);
 #endif
-  //called when the url is not defined here
-  //use it to load content from SPIFFS
+  //called when the url is not defined here, use it to load content from SPIFFS
   server.onNotFound([]() {
     if (!handleFileRead(server.uri())) {
       server.send(404, "text/plain", "FileNotFound");
     }
   });
-//  server.begin();
-
-
 }
 
 void OkRetorn() {
@@ -139,9 +115,7 @@ void printDirectory(){
     output += fileName;
     output +="' style='text-decoration: none;'> &#10006; </a><br/>";
     server.sendContent(output);
-
   }
-  
   server.sendContent("<br/><form action='/create'>Archivo nuevo: <input type='text' name='noufitxer' value=''>  <input type='submit' value='Crea'></form>");
   server.sendContent("<br/><form method='post' enctype='multipart/form-data' action='/upload'>Archivo a enviar: <input type='file' name='myFile'><input type='submit' value='Envia'></form>");
   server.sendContent("</body></html>");
@@ -287,7 +261,6 @@ void handleFileEdit() {
   server.sendContent("<form action='/save' method='POST'>Archivo: <input type='text' name='nomfitxer' value='");
   server.sendContent(path);
   server.sendContent("' readonly><br/><textarea name='cos' rows='30' cols='40' wrap='off'>");
- 
   File file = SPIFFS.open(path,"r");
   char buffer[2];
   buffer[1] = 0;
@@ -296,7 +269,6 @@ void handleFileEdit() {
   }
   file.close();
   server.sendContent("</textarea><br><input type='submit' value='Guardar'></form></body></html>");
-  
   path = String();
 }
 
@@ -305,7 +277,7 @@ void handleFileSave() {
   String text = server.arg("cos");
   File file = SPIFFS.open(path,"w");
   if (!file) {
-    DBG_OUTPUT_PORT.println("file open failed");
+    Serial.println("file open failed");
   }
   file.print(text);
   file.close();

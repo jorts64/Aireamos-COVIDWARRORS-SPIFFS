@@ -10,13 +10,12 @@
 MicroOLED oled(PIN_RESET, DC_JUMPER);
 char grau=248;
 extern ESP8266WebServer server;
-float T, RH;
-int CO2,P;
+float T, RH, Tacc=0, RHacc=0;
+int CO2, P, CO2acc=0, Pacc=0;
+int Nmes=0;
 unsigned long ahora;
 unsigned long siguiente;
 unsigned long intervalo = 300000;
-  
-
 
 void ajaxT() {
      String txt = String(T);
@@ -45,17 +44,16 @@ void ajaxP() {
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);  
   digitalWrite(LED_BUILTIN,HIGH);
+  Serial.begin(9600);
   Wire.begin();
   oled.begin();    // Initialize the OLED
   oled.clear(ALL); // Clear the display's internal memory
   oled.display();  // Display what's in the buffer (splashscreen)
   delay(1000);     // Delay 1000 ms
   oled.clear(PAGE); // Clear the buffer.
-
   initSensors();
   SPIFFS.begin();
-  initHelper(); //inclou connexió Wifi i server
-                // Aquí podem afegir altres funcions server.on()
+  initHelper(); 
   server.on("/getT", ajaxT);
   server.on("/getH", ajaxH);
   server.on("/getC", ajaxC);
@@ -78,41 +76,21 @@ void loop() {
   RH=getRH();
   CO2=getCO2();
   P=getP();
-  debugTime();
-  DBG_OUTPUT_PORT.print("Temperatura (ºC): ");
-  DBG_OUTPUT_PORT.println(T);
-  DBG_OUTPUT_PORT.print("Humedad relativa (%): ");
-  DBG_OUTPUT_PORT.println(RH);
-  DBG_OUTPUT_PORT.print("Concentración CO2 (ppm): ");
-  DBG_OUTPUT_PORT.println(CO2);
-  DBG_OUTPUT_PORT.print("Presión atmosférica (hPa): ");
-  DBG_OUTPUT_PORT.println(P);
-  DBG_OUTPUT_PORT.println("");
-  oled.clear(PAGE);
-  oled.setFontType(0);
-  oled.setCursor(0,0);
-  oled.print("T:");
-  oled.print(T);
-  oled.print(grau);
-  oled.print("C");
-  oled.setCursor(0,10);
-  oled.print("HR:");
-  oled.print(RH);
-  oled.print(" %");
-  oled.setCursor(0,20);
-  oled.print("CO2:");
-  oled.print(CO2);
-  oled.print(" p");
-  oled.setCursor(0,30);
-  oled.print("IP:");
-  oled.print(WiFi.localIP());
+  Nmes++; Tacc+=T; RHacc+=RH; CO2acc+=CO2; Pacc+=P;
+  oled.clear(PAGE); oled.setFontType(0); oled.setCursor(0,0);
+  oled.print("T:"); oled.print(T); oled.print(String(grau)); oled.print("C");
+  oled.setCursor(0,10); oled.print("HR:"); oled.print(RH); oled.print(" %");
+  oled.setCursor(0,20); oled.print("CO2:"); oled.print(CO2); oled.print(" p");
+  oled.setCursor(0,30); oled.print("IP:"); oled.print(WiFi.localIP());
   oled.display();
   if (millis()>siguiente) {
     digitalWrite(LED_BUILTIN,LOW);  
     siguiente = siguiente + intervalo;
-    guarda(T, RH, CO2, P);
-    ThingSpeakSend(T, RH, CO2, P);
-    MQTTSend(T, RH, CO2, P);
+    Tacc=Tacc/Nmes; RHacc=RHacc/Nmes; CO2acc=CO2acc/Nmes; Pacc=Pacc/Nmes;
+    guarda(Tacc, RHacc, CO2acc, Pacc);
+    ThingSpeakSend(Tacc, RHacc, CO2acc, Pacc);
+    MQTTSend(Tacc, RHacc, CO2acc, Pacc);
+    Nmes=0; Tacc=0; RHacc=0; CO2acc=0; Pacc=0;
     digitalWrite(LED_BUILTIN,HIGH);
   }  
   espera(3000);      

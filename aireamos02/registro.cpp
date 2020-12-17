@@ -10,12 +10,9 @@ typedef struct {
 } Entrada;
 
 Entrada registro[300];
-
 extern ESP8266WebServer server;
-
-String oldPath="";
+String oldPath="/prova.csv";
 int pos=0;
-
 char LF = 10;
 
 void guarda(float T, float RH, int CO2, int P) {
@@ -32,7 +29,6 @@ void guarda(float T, float RH, int CO2, int P) {
     }
     File file = SPIFFS.open(oldPath,"w");
     if (!file) {
-      DBG_OUTPUT_PORT.println("file open failed");
     }
     file.print(txt);
     file.close();
@@ -40,7 +36,6 @@ void guarda(float T, float RH, int CO2, int P) {
     oldPath=path;
     pos=0;
   }
- 
   strftime (buffer,80,"%H",timeinfo);
   registro[pos].hora=String(buffer);
   strftime (buffer,80,"%M",timeinfo);
@@ -51,7 +46,6 @@ void guarda(float T, float RH, int CO2, int P) {
   registro[pos].RH=RH;
   registro[pos].CO2=CO2;
   registro[pos].P=P;
-  
   pos++; 
 }
 
@@ -66,7 +60,6 @@ void mostra() {
 
 void printHistorics(){
   FSInfo fs_info;
-  
   Dir dir = SPIFFS.openDir("/dades/");
   String output;
   while (dir.next()) {
@@ -87,7 +80,6 @@ void printHistorics(){
     server.sendContent(output);
   }
   SPIFFS.info(fs_info);  
-
   output ="<br/>Usados ";
   output +=formatBytes(fs_info.usedBytes);
   output +=" de ";
@@ -114,41 +106,36 @@ void DataDelete() {
   server.send(200, "text/html", "<script>window.location.replace('/historic.html')</script>");
 }
 
-
 void grafica() {
   String out = "";
   char temp[1000];
   out += "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"800\" height=\"600\">\n";
   out += "<rect width=\"800\" height=\"600\" fill=\"rgb(250, 230, 210)\" stroke-width=\"1\" stroke=\"rgb(0, 0, 0)\" />\n";
   out += "<g stroke=\"black\">\n";
-  int y = map(0,0,4000,550,0);
+  int y = map(0,0,2000,550,0);
   int x = map(0,0,1440,50,800);
-  int y2 = map(4000,0,4000,550,0);
+  int y2 = map(2000,0,2000,550,0);
   int x2 = map(1440,0,1440,50,800);
   sprintf(temp, "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke-width=\"1\" />\n", x, y, x2, y);
   out += temp;
   sprintf(temp, "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke-width=\"1\" />\n", x, y, x, y2);
   out += temp;
   x = 5;
-  for (int i = 0; i< 4000; i+=1000) {
-    y = map(i,0,4000,550,0);
+  for (int i = 0; i< 2000; i+=500) {
+    y = map(i,0,2000,550,0);
     sprintf(temp, "<text x=\"%d\" y=\"%d\">%d</text>\n", x, y, i);
     out += temp;      
   }
-
   y = 575;
   for (int i = 0; i< 24; i+=3) {
     x = map(i*60,0,1440,50,800);
     sprintf(temp, "<text x=\"%d\" y=\"%d\">%d</text>\n", x, y, i);
     out += temp;      
   }
-
-
-  y = map(registro[0].CO2,0,4000,550,0);
+  y = map(registro[0].CO2,0,2000,550,0);
   x = map(registro[0].hora.toInt()*60+registro[0].minut.toInt(),0,1440,50,800);
-
   for (int i = 1; i < pos; i++) {
-    y2 = map(registro[i].CO2,0,4000,550,0);
+    y2 = map(registro[i].CO2,0,2000,550,0);
     x2 = map(registro[i].hora.toInt()*60+registro[i].minut.toInt(),0,1440,50,800);
     sprintf(temp, "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke-width=\"1\" />\n", x, y, x2, y2);
     out += temp;
@@ -156,10 +143,5 @@ void grafica() {
     y = y2;    
   }
   out += "</g>\n</svg>\n";
-
   server.send ( 200, "image/svg+xml", out);
-}
-
-
-  
-  
+}  
