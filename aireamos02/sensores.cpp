@@ -1,5 +1,5 @@
-#include "MHZ19.h"                                        
-MHZ19 myMHZ19;
+#include "MHZ19.h"          // Uses https://github.com/strange-v/MHZ19, don't use another with same name                                     
+MHZ19 mhz(&Serial);
 
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
@@ -7,9 +7,6 @@ Adafruit_BME280 bme;
 
 void initSensors() {
   Serial.swap();
-  myMHZ19.begin(Serial);  
-  myMHZ19.setRange(2000);  
-  myMHZ19.autoCalibration(false);    
   bme.begin(0x76);
 }
 
@@ -25,7 +22,13 @@ float getRH() {
 }
 
 int getCO2() {
-  return(myMHZ19.getCO2());
+  MHZ19_RESULT response = mhz.retrieveData();
+  if (response == MHZ19_RESULT_OK){  
+    return(mhz.getCO2());
+  }
+  else {
+    return(4000);
+  }
 }
 
 int getP() {

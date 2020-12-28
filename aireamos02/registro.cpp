@@ -23,7 +23,7 @@ void guarda(float T, float RH, int CO2, int P) {
   strftime (buffer,80,"/dades/%Y-%m-%d.csv",timeinfo);
   String path(buffer);
   if (path!=oldPath){
-    String txt = "HH,MM,T,RH,CO2"+String(LF);
+    String txt = "HH:MM:SS,T,RH,CO2,P"+String(LF);
     for (int i=0;i<pos;i++) {
       txt += registro[i].hora+":"+registro[i].minut+":"+registro[i].segon+","+String(registro[i].T)+","+String(registro[i].RH)+","+String(registro[i].CO2)+","+String(registro[i].P)+String(LF);
     }
