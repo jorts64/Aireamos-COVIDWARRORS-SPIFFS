@@ -1,12 +1,14 @@
+#include <SoftwareSerial.h>
+SoftwareSerial ss(D7,D8); // RX, TX
 #include "MHZ19.h"          // Uses https://github.com/strange-v/MHZ19, don't use another with same name                                     
-MHZ19 mhz(&Serial);
+MHZ19 mhz(&ss);
 
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 Adafruit_BME280 bme; 
 
 void initSensors() {
-  Serial.swap();
+  ss.begin(9600);
   bme.begin(0x76);
 }
 

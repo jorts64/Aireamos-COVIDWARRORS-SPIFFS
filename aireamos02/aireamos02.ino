@@ -44,7 +44,7 @@ void ajaxP() {
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);  
   digitalWrite(LED_BUILTIN,HIGH);
-  Serial.begin(9600);
+  Serial.begin(115200);
   Wire.begin();
   oled.begin();    // Initialize the OLED
   oled.clear(ALL); // Clear the display's internal memory

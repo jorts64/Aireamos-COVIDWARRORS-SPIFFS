@@ -79,13 +79,23 @@ void printHistorics(){
     output +="";
     server.sendContent(output);
   }
-  SPIFFS.info(fs_info);  
-  output ="<br/>Usados ";
+  SPIFFS.info(fs_info);
+  unsigned long percentatge = fs_info.usedBytes * 100 / fs_info.totalBytes;  
+  output = "<br/>";
+  output += "<div class=\"w3-light-grey w3-round-xlarge\" style=\"width:50%; margin-left:20px\">";
+  output += "<div class=\"w3-container w3-brown w3-round-xlarge w3-center\" style=\"width:";
+  output += percentatge;
+  output += "%\">";
+  output += percentatge;
+  output += "%</div></div>";
+  server.sendContent(output);
+
+  output ="<p style=\"margin-left:20px\">Usados ";
   output +=formatBytes(fs_info.usedBytes);
   output +=" de ";
   output +=formatBytes(fs_info.totalBytes);
-  output +="<br/>";
-  output +="Puede liberar espacio borrando archivos con el icono de la papelera &#128465;<br/>";
+  output +="</p>";
+  output +="<p style=\"margin-left:20px\">Puede liberar espacio borrando archivos con el icono de la papelera &#128465;</p>";
   server.sendContent(output);
   output = String();
 }
